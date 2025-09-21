@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.1">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px '.AppleSystemUIFontMonospaced'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px '.AppleSystemUIFontMonospaced'; min-height: 15.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ja"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;供養ナビ・インタラクティブガイド&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Chosen Palette: Calm Harmony --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Application Structure Plan: A task-oriented dashboard structure was chosen to guide users directly to their area of concern (funerals, graves, costs, etc.), which is more efficient than a traditional blog format for an audience likely under stress. The user selects a major topic, and the main content area dynamically updates with interactive elements like timelines, comparison cards, or charts. This approach breaks down complex information into manageable, explorable chunks, prioritizing user clarity and ease of navigation over the source's linear article structure. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Visualization &amp; Content Choices:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>- Funeral Process: Report Info -&gt; Steps of a Japanese funeral. Goal -&gt; Understand a process. Viz -&gt; Interactive step-by-step timeline. Interaction -&gt; Click steps to reveal details. Justification -&gt; Simplifies a complex, linear process. Method -&gt; HTML/CSS/JS.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- Types of Graves: Report Info -&gt; Different grave options. Goal -&gt; Compare options. Viz -&gt; Tabbed content cards. Interaction -&gt; Click tabs to switch views. Justification -&gt; Allows for easy side-by-side comparison of features and costs. Method -&gt; HTML/CSS/JS.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- Service Costs: Report Info -&gt; Average costs for services. Goal -&gt; Compare costs. Viz -&gt; Bar Chart. Interaction -&gt; Filter by service type. Justification -&gt; Visually represents financial differences effectively. Library -&gt; Chart.js/Canvas.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>- Etiquette Q&amp;A: Report Info -&gt; Common etiquette questions. Goal -&gt; Quick answers. Viz -&gt; Accordion list. Interaction -&gt; Click to expand/collapse answers. Justification -&gt; Standard, space-saving UI for FAQs. Method -&gt; HTML/CSS/JS.</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Noto Sans JP', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #FDFBF8;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #383838;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 700px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-left: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-right: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 320px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.nav-button.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #047857;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 10px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.timeline-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-left: 2px solid #D1D5DB;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.timeline-item:last-child {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-left: 2px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.timeline-dot {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: -9px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #D1D5DB;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.timeline-item.active .timeline-dot {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #047857;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content-section.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-button.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #047857;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #047857;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-amber-50 text-stone-800"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container mx-auto px-4 py-8 max-w-5xl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-4xl font-bold text-emerald-800"&gt;供養のてびき&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="mt-2 text-stone-600"&gt;日本の供養に関する慣習をわかりやすく解説するインタラクティブガイドです。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;nav class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-view="funeral" class="nav-button active bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="text-2xl"&gt;🕊️&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="block mt-1 font-semibold text-emerald-700"&gt;葬儀の流れ&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-view="graves" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="text-2xl"&gt;🪦&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="block mt-1 font-semibold text-emerald-700"&gt;お墓の種類&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-view="costs" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="text-2xl"&gt;💰&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="block mt-1 font-semibold text-emerald-700"&gt;費用の目安&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button data-view="etiquette" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="text-2xl"&gt;🤝&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span class="block mt-1 font-semibold text-emerald-700"&gt;作法とマナー&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;main id="main-content" class="bg-white p-6 rounded-lg shadow-inner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="funeral" class="content-section active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold mb-4 text-emerald-800"&gt;葬儀の流れを理解する&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mb-6 text-stone-600"&gt;ご逝去から法要まで、一般的な仏式の葬儀の流れをステップごとに解説します。各ステップをクリックすると、詳しい説明が表示されます。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="md:flex md:space-x-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="timeline-container" class="md:w-1/3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="timeline-details" class="md:w-2/3 mt-6 md:mt-0 p-4 bg-amber-50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="graves" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold mb-4 text-emerald-800"&gt;お墓の種類を選ぶ&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mb-6 text-stone-600"&gt;近年、お墓に対する考え方は多様化しています。ここでは、伝統的なお墓から新しい形の供養まで、それぞれの特徴や費用を比較し、あなたに合った選択肢を見つける手助けをします。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="graves-tabs" class="flex border-b border-stone-200 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="graves-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="costs" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;h2 class="text-2xl font-bold mb-4 text-emerald-800"&gt;費用の目安を知る&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mb-6 text-stone-600"&gt;供養には様々な費用がかかります。ここでは主な費用の全国的な平均相場をグラフで示します。下のボタンで表示する内容を切り替えて、費用の全体像を把握しましょう。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="text-center mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;select id="cost-filter" class="p-2 border rounded-md shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value="all"&gt;全体の費用&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value="funeral"&gt;葬儀関連&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;option value="grave"&gt;お墓関連&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="chart-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;canvas id="costChart"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;section id="etiquette" class="content-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-2xl font-bold mb-4 text-emerald-800"&gt;作法とマナー Q&amp;A&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mb-6 text-stone-600"&gt;弔事における服装や香典、言葉遣いなど、知っておきたい基本的なマナーをQ&amp;A形式でまとめました。質問をクリックして回答を確認してください。&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="etiquette-accordion" class="space-y-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', function() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const navButtons = document.querySelectorAll('.nav-button');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const contentSections = document.querySelectorAll('.content-section');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const mainContent = document.getElementById('main-content');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const data = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>funeral: [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: 'ご逝去・搬送', content: '医師から死亡診断書を受け取ります。その後、葬儀社に連絡し、ご遺体を安置場所（ご自宅や斎場など）へ搬送してもらいます。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '安置・枕飾り', content: 'ご遺体を安置し、枕元にお飾りをします（枕飾り）。この間に、葬儀社と葬儀の日程や内容の打ち合わせを行います。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '納棺の儀', content: 'ご遺体を清め、死装束を着せ、お棺に納める儀式です。故人が愛用していたものを副葬品として一緒に入れることもあります。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '通夜', content: '故人と親しい人々が夜通し最後の別れを惜しむ儀式です。近年では、2時間程度の「半通夜」が一般的です。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '葬儀・告別式', content: '僧侶による読経や参列者による焼香が行われます。告別式は、故人との最後の対面をし、お別れを告げる場です。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '火葬・骨上げ', content: '火葬場でご遺体を火葬します。火葬後、遺骨を骨壷に納める「骨上げ」を近親者で行います。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ title: '初七日法要', content: '本来は亡くなってから7日目に行う法要ですが、最近では火葬後や葬儀当日に繰り上げて行う「繰り上げ法要」が増えています。' }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>graves: [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ name: '一般墓', features: ['代々受け継がれる伝統的なお墓', '石材やデザインを自由に選べる', '年間管理費が必要', '継承者が必要', '約150万〜350万円'], pros: ['代々受け継げる', '自由にデザインできる'], cons: ['費用が高め', '管理の手間がかかる'] },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ name: '樹木葬', features: ['墓石の代わりに樹木を墓標とする', '自然に還るイメージで人気', '継承者が不要な場合が多い', '約30万〜80万円'], pros: ['費用が比較的安価', '継承者不要'], cons: ['分骨や改葬が困難', '親族の理解が必要な場合も'] },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ name: '納骨堂', features: ['屋内に遺骨を安置する施設', '天候に左右されずお参りできる', '交通の便が良い場所が多い', '約50万〜150万円'], pros: ['利便性が高い', '管理が楽'], cons: ['永代に渡る供養が難しい場合も', '個別スペースが狭い'] },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ name: '永代供養墓', features: ['寺院や霊園が永代にわたり供養・管理', '継承者がいない方向け', '他の方の遺骨と一緒に祀られることが多い', '約10万〜100万円'], pros: ['費用が安価', '継承者不要', '管理が不要'], cons: ['他の方と一緒に合葬される', '個別のお墓がない'] },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>costs: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>labels: ['葬儀一式', '飲食接待費', '寺院費用', '一般墓', '樹木葬', '納骨堂'],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>label: '費用（万円）',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>data: [120, 30, 45, 200, 60, 100],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>backgroundColor: ['#10B981', '#34D399', '#6EE7B7', '#065F46', '#047857', '#059669'],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>filters: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>all: [0, 1, 2, 3, 4, 5],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>funeral: [0, 1, 2],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>grave: [3, 4, 5]</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>etiquette: [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ question: '通夜や葬儀の服装は？', answer: '男性はブラックスーツ、女性はブラックフォーマルが基本です。学生は制服で構いません。光沢のある素材や派手なアクセサリーは避けましょう。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ question: '香典の金額の目安は？', answer: '故人との関係性によりますが、一般的には知人・友人なら5千円、親族なら1万〜5万円が目安です。新札は避け、旧札を香典袋に入れます。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ question: 'お悔やみの言葉は？', answer: '「この度はご愁傷様です」「心よりお悔やみ申し上げます」などが一般的です。「重ね重ね」「たびたび」などの重ね言葉や、直接的な死因を尋ねることは避けましょう。' },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ question: '焼香の作法は？', answer: '宗派により異なりますが、一般的には右手の親指・人差し指・中指で抹香をつまみ、額に押しいただいてから香炉にくべます。回数は1〜3回が基本です。' }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>]</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let costChart;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function switchView(view) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>navButtons.forEach(btn =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>btn.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if(btn.dataset.view === view) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>btn.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>contentSections.forEach(section =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>section.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if(section.id === view) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>section.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (view === 'costs') {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (!costChart) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>initCostChart();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateCostChart('all');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>navButtons.forEach(button =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>button.addEventListener('click', () =&gt; switchView(button.dataset.view));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initFuneralTimeline() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const container = document.getElementById('timeline-container');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const details = document.getElementById('timeline-details');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>data.funeral.forEach((item, index) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const itemEl = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>itemEl.className = 'timeline-item cursor-pointer';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>itemEl.dataset.index = index;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>itemEl.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="timeline-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="font-semibold text-stone-700"&gt;${index + 1}. ${item.title}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>container.appendChild(itemEl);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const timelineItems = container.querySelectorAll('.timeline-item');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>function selectTimelineItem(index) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>timelineItems.forEach(item =&gt; item.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>timelineItems[index].classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>details.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-bold text-lg text-emerald-700 mb-2"&gt;${data.funeral[index].title}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="text-stone-600"&gt;${data.funeral[index].content}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>timelineItems.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>item.addEventListener('click', () =&gt; selectTimelineItem(item.dataset.index));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectTimelineItem(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initGravesTabs() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const tabsContainer = document.getElementById('graves-tabs');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const contentContainer = document.getElementById('graves-content');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>data.graves.forEach((grave, index) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const tab = document.createElement('button');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tab.className = `tab-button px-4 py-2 font-semibold text-stone-600 border-b-2 border-transparent hover:border-emerald-600 hover:text-emerald-600 transition-all`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tab.textContent = grave.name;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tab.dataset.index = index;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tabsContainer.appendChild(tab);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const graveTabs = tabsContainer.querySelectorAll('button');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>function selectGraveTab(index) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>graveTabs.forEach(tab =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>tab.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>graveTabs[index].classList.add('active');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const grave = data.graves[index];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>contentContainer.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4 bg-amber-50 rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-bold text-emerald-700"&gt;${grave.name}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-4 grid md:grid-cols-2 gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h4 class="font-bold text-stone-700"&gt;メリット&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;ul class="list-disc list-inside text-stone-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>${grave.pros.map(p =&gt; `&lt;li&gt;${p}&lt;/li&gt;`).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h4 class="font-bold text-stone-700"&gt;デメリット&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;ul class="list-disc list-inside text-stone-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>${grave.cons.map(c =&gt; `&lt;li&gt;${c}&lt;/li&gt;`).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="mt-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h4 class="font-bold text-stone-700"&gt;主な特徴と費用&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;ul class="list-disc list-inside text-stone-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>${grave.features.map(f =&gt; `&lt;li&gt;${f}&lt;/li&gt;`).join('')}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>graveTabs.forEach(tab =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>tab.addEventListener('click', () =&gt; selectGraveTab(tab.dataset.index));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectGraveTab(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initEtiquetteAccordion() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const container = document.getElementById('etiquette-accordion');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data.etiquette.forEach(item =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const accordionItem = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>accordionItem.className = 'border border-stone-200 rounded-md';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>accordionItem.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="w-full text-left p-4 font-semibold text-stone-700 flex justify-between items-center hover:bg-amber-100"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span&gt;${item.question}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="transform transition-transform duration-300 "&gt;▼&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="p-4 bg-amber-50 text-stone-600 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>${item.answer}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>container.appendChild(accordionItem);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.querySelectorAll('button').forEach(button =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>button.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const content = button.nextElementSibling;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const icon = button.querySelector('span:last-child');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>content.classList.toggle('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>icon.classList.toggle('rotate-180');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initCostChart() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const ctx = document.getElementById('costChart').getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>costChart = new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>type: 'bar',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>labels: [],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>datasets: data.costs.datasets</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>maintainAspectRatio: false,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>legend: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>display: false</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>tooltip: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>callbacks: {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>label: function(context) {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>return `${context.dataset.label}: ${context.raw.toLocaleString()} 万円`;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>scales: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>y: {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>beginAtZero: true,</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>title: {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>display: true,</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>text: '費用（万円）'</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateCostChart(filter) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const indices = data.costs.filters[filter];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newLabels = indices.map(i =&gt; data.costs.labels[i]);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newData = indices.map(i =&gt; data.costs.datasets[0].data[i]);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>costChart.data.labels = newLabels;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>costChart.data.datasets[0].data = newData;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>costChart.update();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('cost-filter').addEventListener('change', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateCostChart(e.target.value);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>initFuneralTimeline();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>initGravesTabs();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>initEtiquetteAccordion();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>switchView('funeral');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+<p class="p2"><br></p>
+</body>
+</html>
