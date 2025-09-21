@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Chosen Palette: Refined Emerald and Cream -->
     <!-- Application Structure Plan: A task-oriented dashboard structure was chosen to guide users directly to their area of concern (funerals, graves, costs, etc.), which is more efficient than a traditional blog format for an audience likely under stress. The user selects a major topic, and the main content area dynamically updates with interactive elements like timelines, comparison cards, or charts. This approach breaks down complex information into manageable, explorable chunks, prioritizing user clarity and ease of navigation over the source's linear article structure. -->
     <!-- Visualization & Content Choices: 
         - Funeral Process: Report Info -> Steps of a Japanese funeral. Goal -> Understand a process. Viz -> Interactive step-by-step timeline. Interaction -> Click steps to reveal details. Justification -> Simplifies a complex, linear process. Method -> HTML/CSS/JS.
@@ -80,6 +80,12 @@
             border-color: #047857;
             color: #047857;
         }
+        .social-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .social-button:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="bg-amber-50 text-stone-800">
@@ -153,6 +159,25 @@
             </section>
 
         </main>
+        
+        <footer class="mt-8 text-center text-stone-500">
+            <h3 class="text-xl font-bold text-emerald-800 mb-4">お役立ち情報、ぜひシェアしてください</h3>
+            <div class="flex justify-center space-x-4">
+                <a id="line-share-button" href="#" class="social-button text-4xl text-green-500 hover:text-green-600" aria-label="LINEでシェア">
+                    <!-- LINE SVG Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11.95 24C5.356 24 .05 18.643 0 11.996C0 5.352 5.356 0 11.95 0c6.597 0 11.95 5.352 11.95 11.996c-.001 6.647-5.354 10.999-11.95 12zM12.012 5.166c-2.43 0-4.045 1.761-4.045 4.093c.001 1.093.58 1.948 1.547 2.613c.092.053.18.11.26.173a.35.35 0 0 1-.027.568c-.624.526-1.077 1.05-1.42 1.92c-.22.56-.037.712.56.516c.38-.13.916-.312 1.408-.553c.18-.088.358-.175.53-.255a.35.35 0 0 1 .533.05c.895 1.52 1.624 2.155 2.697 2.155c2.43 0 4.046-1.762 4.046-4.093c-.001-1.093-.58-1.949-1.547-2.614c-.092-.052-.18-.11-.26-.173a.35.35 0 0 1 .027-.568c.624-.526 1.077-1.05 1.42-1.92c.22-.56.037-.712-.56-.516c-.38.13-.916.312-1.408.553a2.38 2.38 0 0 0-.53.255a.35.35 0 0 1-.533-.05c-.895-1.52-1.624-2.155-2.697-2.155zm-.055 1.638c-.352 0-.64.286-.64.637s.287.638.64.638c.352 0 .64-.286.64-.637s-.287-.638-.64-.638zm.055 2.548c-.352 0-.64.286-.64.637s.287.638.64.638c.352 0 .64-.286.64-.637s-.287-.638-.64-.638z"/></svg>
+                </a>
+                <a id="x-share-button" href="#" class="social-button text-3xl text-stone-700 hover:text-stone-900" aria-label="Xでシェア">
+                    <!-- X SVG Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26l8.502 11.24h-7.214l-5.305-7.01l-5.904 7.01H.436l7.545-9.088L.556 2.25H8.08L13.23 9.69L18.244 2.25Zm-2.88 17.5l-.768-.96L6.516 3.99h3.76l8.803 11.66l.754.95H15.364Z"/></svg>
+                </a>
+                <a id="facebook-share-button" href="#" class="social-button text-3xl text-blue-600 hover:text-blue-700" aria-label="Facebookでシェア">
+                    <!-- Facebook SVG Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.049c-5.409 0-9.75 4.341-9.75 9.75S6.591 21.549 12 21.549s9.75-4.341 9.75-9.75S17.409 2.049 12 2.049zM15.424 9.074h-2.128v-1.455c0-.528.204-.757.94-.757h1.15V4.621l-1.626-.007c-1.854 0-3.082 1.127-3.082 3.16v1.298h-1.92v2.433h1.92V18.17h3.194v-6.663h2.128l.338-2.433z"/></svg>
+                </a>
+            </div>
+        </footer>
+
     </div>
 
     <script>
@@ -391,339 +416,26 @@
             document.getElementById('cost-filter').addEventListener('change', (e) => {
                 updateCostChart(e.target.value);
             });
-            
-            initFuneralTimeline();
-            initGravesTabs();
-            initEtiquetteAccordion();
-            switchView('funeral');
-        });
-    </script>
-</body>
-</html>            transition: background-color 0.3s ease;
-        }
-        .timeline-item.active .timeline-dot {
-            background-color: #047857;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        .tab-button.active {
-            border-color: #047857;
-            color: #047857;
-        }
-    </style>
-</head>
-<body class="bg-amber-50 text-stone-800">
 
-    <div class="container mx-auto px-4 py-8 max-w-5xl">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-emerald-800">供養のてびき</h1>
-            <p class="mt-2 text-stone-600">日本の供養に関する慣習をわかりやすく解説するインタラクティブガイドです。</p>
-        </header>
+            // Social Sharing
+            const shareTitle = "供養のてびき：日本の慣習をわかりやすく解説";
+            const shareUrl = "https://appleringo3434-beep.github.io/kuyo-navi/kuyo-interactive-guide.html";
 
-        <nav class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <button data-view="funeral" class="nav-button active bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none">
-                <span class="text-2xl">🕊️</span>
-                <span class="block mt-1 font-semibold text-emerald-700">葬儀の流れ</span>
-            </button>
-            <button data-view="graves" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none">
-                <span class="text-2xl">🪦</span>
-                <span class="block mt-1 font-semibold text-emerald-700">お墓の種類</span>
-            </button>
-            <button data-view="costs" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none">
-                <span class="text-2xl">💰</span>
-                <span class="block mt-1 font-semibold text-emerald-700">費用の目安</span>
-            </button>
-            <button data-view="etiquette" class="nav-button bg-white p-4 rounded-lg shadow-md hover:shadow-lg hover:bg-emerald-50 focus:outline-none">
-                <span class="text-2xl">🤝</span>
-                <span class="block mt-1 font-semibold text-emerald-700">作法とマナー</span>
-            </button>
-        </nav>
-
-        <main id="main-content" class="bg-white p-6 rounded-lg shadow-inner">
-            <section id="funeral" class="content-section active">
-                <h2 class="text-2xl font-bold mb-4 text-emerald-800">葬儀の流れを理解する</h2>
-                <p class="mb-6 text-stone-600">ご逝去から法要まで、一般的な仏式の葬儀の流れをステップごとに解説します。各ステップをクリックすると、詳しい説明が表示されます。</p>
-                <div class="md:flex md:space-x-8">
-                    <div id="timeline-container" class="md:w-1/3">
-                    </div>
-                    <div id="timeline-details" class="md:w-2/3 mt-6 md:mt-0 p-4 bg-amber-50 rounded-lg">
-                    </div>
-                </div>
-            </section>
-
-            <section id="graves" class="content-section">
-                <h2 class="text-2xl font-bold mb-4 text-emerald-800">お墓の種類を選ぶ</h2>
-                <p class="mb-6 text-stone-600">近年、お墓に対する考え方は多様化しています。ここでは、伝統的なお墓から新しい形の供養まで、それぞれの特徴や費用を比較し、あなたに合った選択肢を見つける手助けをします。</p>
-                <div id="graves-tabs" class="flex border-b border-stone-200 mb-4">
-                </div>
-                <div id="graves-content">
-                </div>
-            </section>
-            
-            <section id="costs" class="content-section">
-                 <h2 class="text-2xl font-bold mb-4 text-emerald-800">費用の目安を知る</h2>
-                <p class="mb-6 text-stone-600">供養には様々な費用がかかります。ここでは主な費用の全国的な平均相場をグラフで示します。下のボタンで表示する内容を切り替えて、費用の全体像を把握しましょう。</p>
-                <div class="text-center mb-4">
-                    <select id="cost-filter" class="p-2 border rounded-md shadow-sm">
-                        <option value="all">全体の費用</option>
-                        <option value="funeral">葬儀関連</option>
-                        <option value="grave">お墓関連</option>
-                    </select>
-                </div>
-                <div class="chart-container">
-                    <canvas id="costChart"></canvas>
-                </div>
-            </section>
-
-            <section id="etiquette" class="content-section">
-                <h2 class="text-2xl font-bold mb-4 text-emerald-800">作法とマナー Q&A</h2>
-                <p class="mb-6 text-stone-600">弔事における服装や香典、言葉遣いなど、知っておきたい基本的なマナーをQ&A形式でまとめました。質問をクリックして回答を確認してください。</p>
-                <div id="etiquette-accordion" class="space-y-2">
-                </div>
-            </section>
-
-        </main>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navButtons = document.querySelectorAll('.nav-button');
-            const contentSections = document.querySelectorAll('.content-section');
-            const mainContent = document.getElementById('main-content');
-            
-            const data = {
-                funeral: [
-                    { title: 'ご逝去・搬送', content: '医師から死亡診断書を受け取ります。その後、葬儀社に連絡し、ご遺体を安置場所（ご自宅や斎場など）へ搬送してもらいます。' },
-                    { title: '安置・枕飾り', content: 'ご遺体を安置し、枕元にお飾りをします（枕飾り）。この間に、葬儀社と葬儀の日程や内容の打ち合わせを行います。' },
-                    { title: '納棺の儀', content: 'ご遺体を清め、死装束を着せ、お棺に納める儀式です。故人が愛用していたものを副葬品として一緒に入れることもあります。' },
-                    { title: '通夜', content: '故人と親しい人々が夜通し最後の別れを惜しむ儀式です。近年では、2時間程度の「半通夜」が一般的です。' },
-                    { title: '葬儀・告別式', content: '僧侶による読経や参列者による焼香が行われます。告別式は、故人との最後の対面をし、お別れを告げる場です。' },
-                    { title: '火葬・骨上げ', content: '火葬場でご遺体を火葬します。火葬後、遺骨を骨壷に納める「骨上げ」を近親者で行います。' },
-                    { title: '初七日法要', content: '本来は亡くなってから7日目に行う法要ですが、最近では火葬後や葬儀当日に繰り上げて行う「繰り上げ法要」が増えています。' }
-                ],
-                graves: [
-                    { name: '一般墓', features: ['代々受け継がれる伝統的なお墓', '石材やデザインを自由に選べる', '年間管理費が必要', '継承者が必要', '約150万〜350万円'], pros: ['代々受け継げる', '自由にデザインできる'], cons: ['費用が高め', '管理の手間がかかる'] },
-                    { name: '樹木葬', features: ['墓石の代わりに樹木を墓標とする', '自然に還るイメージで人気', '継承者が不要な場合が多い', '約30万〜80万円'], pros: ['費用が比較的安価', '継承者不要'], cons: ['分骨や改葬が困難', '親族の理解が必要な場合も'] },
-                    { name: '納骨堂', features: ['屋内に遺骨を安置する施設', '天候に左右されずお参りできる', '交通の便が良い場所が多い', '約50万〜150万円'], pros: ['利便性が高い', '管理が楽'], cons: ['永代に渡る供養が難しい場合も', '個別スペースが狭い'] },
-                    { name: '永代供養墓', features: ['寺院や霊園が永代にわたり供養・管理', '継承者がいない方向け', '他の方の遺骨と一緒に祀られることが多い', '約10万〜100万円'], pros: ['費用が安価', '継承者不要', '管理が不要'], cons: ['他の方と一緒に合葬される', '個別のお墓がない'] },
-                ],
-                costs: {
-                    labels: ['葬儀一式', '飲食接待費', '寺院費用', '一般墓', '樹木葬', '納骨堂'],
-                    datasets: [{
-                        label: '費用（万円）',
-                        data: [120, 30, 45, 200, 60, 100],
-                        backgroundColor: ['#10B981', '#34D399', '#6EE7B7', '#065F46', '#047857', '#059669'],
-                    }],
-                    filters: {
-                        all: [0, 1, 2, 3, 4, 5],
-                        funeral: [0, 1, 2],
-                        grave: [3, 4, 5]
-                    }
-                },
-                etiquette: [
-                    { question: '通夜や葬儀の服装は？', answer: '男性はブラックスーツ、女性はブラックフォーマルが基本です。学生は制服で構いません。光沢のある素材や派手なアクセサリーは避けましょう。' },
-                    { question: '香典の金額の目安は？', answer: '故人との関係性によりますが、一般的には知人・友人なら5千円、親族なら1万〜5万円が目安です。新札は避け、旧札を香典袋に入れます。' },
-                    { question: 'お悔やみの言葉は？', answer: '「この度はご愁傷様です」「心よりお悔やみ申し上げます」などが一般的です。「重ね重ね」「たびたび」などの重ね言葉や、直接的な死因を尋ねることは避けましょう。' },
-                    { question: '焼香の作法は？', answer: '宗派により異なりますが、一般的には右手の親指・人差し指・中指で抹香をつまみ、額に押しいただいてから香炉にくべます。回数は1〜3回が基本です。' }
-                ]
-            };
-            
-            let costChart;
-
-            function switchView(view) {
-                navButtons.forEach(btn => {
-                    btn.classList.remove('active');
-                    if(btn.dataset.view === view) {
-                        btn.classList.add('active');
-                    }
-                });
-
-                contentSections.forEach(section => {
-                    section.classList.remove('active');
-                    if(section.id === view) {
-                        section.classList.add('active');
-                    }
-                });
-
-                if (view === 'costs') {
-                    if (!costChart) {
-                        initCostChart();
-                    }
-                    updateCostChart('all');
-                }
-            }
-
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => switchView(button.dataset.view));
+            document.getElementById('line-share-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                const text = `【${shareTitle}】${shareUrl}`;
+                window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`, '_blank');
             });
-            
-            function initFuneralTimeline() {
-                const container = document.getElementById('timeline-container');
-                const details = document.getElementById('timeline-details');
-                
-                data.funeral.forEach((item, index) => {
-                    const itemEl = document.createElement('div');
-                    itemEl.className = 'timeline-item cursor-pointer';
-                    itemEl.dataset.index = index;
-                    itemEl.innerHTML = `
-                        <div class="timeline-dot"></div>
-                        <p class="font-semibold text-stone-700">${index + 1}. ${item.title}</p>
-                    `;
-                    container.appendChild(itemEl);
-                });
 
-                const timelineItems = container.querySelectorAll('.timeline-item');
-                
-                function selectTimelineItem(index) {
-                    timelineItems.forEach(item => item.classList.remove('active'));
-                    timelineItems[index].classList.add('active');
-                    details.innerHTML = `
-                        <h3 class="font-bold text-lg text-emerald-700 mb-2">${data.funeral[index].title}</h3>
-                        <p class="text-stone-600">${data.funeral[index].content}</p>
-                    `;
-                }
+            document.getElementById('x-share-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                const text = `日本の供養について知りたいことがある？この「供養ナビ」が役立ちます。#供養 #終活`;
+                window.open(`https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`, '_blank');
+            });
 
-                timelineItems.forEach(item => {
-                    item.addEventListener('click', () => selectTimelineItem(item.dataset.index));
-                });
-                
-                selectTimelineItem(0);
-            }
-
-            function initGravesTabs() {
-                const tabsContainer = document.getElementById('graves-tabs');
-                const contentContainer = document.getElementById('graves-content');
-
-                data.graves.forEach((grave, index) => {
-                    const tab = document.createElement('button');
-                    tab.className = `tab-button px-4 py-2 font-semibold text-stone-600 border-b-2 border-transparent hover:border-emerald-600 hover:text-emerald-600 transition-all`;
-                    tab.textContent = grave.name;
-                    tab.dataset.index = index;
-                    tabsContainer.appendChild(tab);
-                });
-
-                const graveTabs = tabsContainer.querySelectorAll('button');
-
-                function selectGraveTab(index) {
-                    graveTabs.forEach(tab => {
-                        tab.classList.remove('active');
-                    });
-                    graveTabs[index].classList.add('active');
-
-                    const grave = data.graves[index];
-                    contentContainer.innerHTML = `
-                        <div class="p-4 bg-amber-50 rounded-lg">
-                            <h3 class="text-xl font-bold text-emerald-700">${grave.name}</h3>
-                            <div class="mt-4 grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <h4 class="font-bold text-stone-700">メリット</h4>
-                                    <ul class="list-disc list-inside text-stone-600">
-                                        ${grave.pros.map(p => `<li>${p}</li>`).join('')}
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-stone-700">デメリット</h4>
-                                    <ul class="list-disc list-inside text-stone-600">
-                                        ${grave.cons.map(c => `<li>${c}</li>`).join('')}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <h4 class="font-bold text-stone-700">主な特徴と費用</h4>
-                                <ul class="list-disc list-inside text-stone-600">
-                                    ${grave.features.map(f => `<li>${f}</li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                graveTabs.forEach(tab => {
-                    tab.addEventListener('click', () => selectGraveTab(tab.dataset.index));
-                });
-
-                selectGraveTab(0);
-            }
-
-            function initEtiquetteAccordion() {
-                const container = document.getElementById('etiquette-accordion');
-                data.etiquette.forEach(item => {
-                    const accordionItem = document.createElement('div');
-                    accordionItem.className = 'border border-stone-200 rounded-md';
-                    accordionItem.innerHTML = `
-                        <button class="w-full text-left p-4 font-semibold text-stone-700 flex justify-between items-center hover:bg-amber-100">
-                            <span>${item.question}</span>
-                            <span class="transform transition-transform duration-300 ">▼</span>
-                        </button>
-                        <div class="p-4 bg-amber-50 text-stone-600 hidden">
-                            ${item.answer}
-                        </div>
-                    `;
-                    container.appendChild(accordionItem);
-                });
-
-                container.querySelectorAll('button').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const content = button.nextElementSibling;
-                        const icon = button.querySelector('span:last-child');
-                        content.classList.toggle('hidden');
-                        icon.classList.toggle('rotate-180');
-                    });
-                });
-            }
-
-            function initCostChart() {
-                const ctx = document.getElementById('costChart').getContext('2d');
-                costChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: [],
-                        datasets: data.costs.datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.dataset.label}: ${context.raw.toLocaleString()} 万円`;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: '費用（万円）'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function updateCostChart(filter) {
-                const indices = data.costs.filters[filter];
-                const newLabels = indices.map(i => data.costs.labels[i]);
-                const newData = indices.map(i => data.costs.datasets[0].data[i]);
-                
-                costChart.data.labels = newLabels;
-                costChart.data.datasets[0].data = newData;
-                costChart.update();
-            }
-
-            document.getElementById('cost-filter').addEventListener('change', (e) => {
-                updateCostChart(e.target.value);
+            document.getElementById('facebook-share-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
             });
             
             initFuneralTimeline();
@@ -734,20 +446,3 @@
     </script>
 </body>
 </html>
-<footer class="mt-8 text-center text-stone-500">
-    <h3 class="text-xl font-bold text-emerald-800 mb-4">お役立ち情報、ぜひシェアしてください</h3>
-    <div class="flex justify-center space-x-4">
-        <a id="line-share-button" href="#" class="social-button text-4xl text-green-500 hover:text-green-600" aria-label="LINEでシェア">
-            <!-- LINE SVG Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M11.95 24C5.356 24 .05 18.643 0 11.996C0 5.352 5.356 0 11.95 0c6.597 0 11.95 5.352 11.95 11.996c-.001 6.647-5.354 10.999-11.95 12zM12.012 5.166c-2.43 0-4.045 1.761-4.045 4.093c.001 1.093.58 1.948 1.547 2.613c.092.053.18.11.26.173a.35.35 0 0 1-.027.568c-.624.526-1.077 1.05-1.42 1.92c-.22.56-.037.712.56.516c.38-.13.916-.312 1.408-.553c.18-.088.358-.175.53-.255a.35.35 0 0 1 .533.05c.895 1.52 1.624 2.155 2.697 2.155c2.43 0 4.046-1.762 4.046-4.093c-.001-1.093-.58-1.949-1.547-2.614c-.092-.052-.18-.11-.26-.173a.35.35 0 0 1 .027-.568c.624-.526 1.077-1.05 1.42-1.92c.22-.56.037-.712-.56-.516c-.38.13-.916.312-1.408.553a2.38 2.38 0 0 0-.53.255a.35.35 0 0 1-.533-.05c-.895-1.52-1.624-2.155-2.697-2.155zm-.055 1.638c-.352 0-.64.286-.64.637s.287.638.64.638c.352 0 .64-.286.64-.637s-.287-.638-.64-.638zm.055 2.548c-.352 0-.64.286-.64.637s.287.638.64.638c.352 0 .64-.286.64-.637s-.287-.638-.64-.638z"/></svg>
-        </a>
-        <a id="x-share-button" href="#" class="social-button text-3xl text-stone-700 hover:text-stone-900" aria-label="Xでシェア">
-            <!-- X SVG Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26l8.502 11.24h-7.214l-5.305-7.01l-5.904 7.01H.436l7.545-9.088L.556 2.25H8.08L13.23 9.69L18.244 2.25Zm-2.88 17.5l-.768-.96L6.516 3.99h3.76l8.803 11.66l.754.95H15.364Z"/></svg>
-        </a>
-        <a id="facebook-share-button" href="#" class="social-button text-3xl text-blue-600 hover:text-blue-700" aria-label="Facebookでシェア">
-            <!-- Facebook SVG Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.049c-5.409 0-9.75 4.341-9.75 9.75S6.591 21.549 12 21.549s9.75-4.341 9.75-9.75S17.409 2.049 12 2.049zM15.424 9.074h-2.128v-1.455c0-.528.204-.757.94-.757h1.15V4.621l-1.626-.007c-1.854 0-3.082 1.127-3.082 3.16v1.298h-1.92v2.433h1.92V18.17h3.194v-6.663h2.128l.338-2.433z"/></svg>
-        </a>
-    </div>
-</footer>
